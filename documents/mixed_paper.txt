@@ -1,0 +1,70 @@
+<html>                    ← :root が指している
+  <body>
+    <div id="root">       ← #root が指している
+      ...
+    </div>
+  </body>
+</html>
+=========================
+#root {
+  width: 1126px;
+  margin: 0 auto;
+}
+これは、<div id="root">という**id="root"が付いている要素だけ**にCSSを適用します。
+
+:root {
+  font-family: Arial;
+}
+<html>  Arial
+  ↓ 継承
+<body>
+  ↓ 継承
+<div id="root">
+  ↓ 継承
+<div>
+  ↓
+<h1> Reactを勉強する </h1>
+<p> 今日は... </p>
+
+
+CSSには、親から子へ継承されるプロパティと、継承されないプロパティがあります。
+たとえば文字関係は継承されるものが多いです。
+:root {
+  color: red;
+  font-family: Arial;
+}すると、
+<html>                ← color: red
+  <body>
+    <div>
+      <p>Hello</p>    ← red・Arialを継承
+    </div>
+  </body>
+</html>
+一方、widthとかは継承されません。
+=========================
+// App.tsx
+import './App.css'
+と書いてあっても、
+
+「App.cssは <App /> 配下だけに適用される」
+
+という意味ではありません。
+
+普通のCSSをimportしているだけなので、読み込まれたらグローバルに効きます。
+=========================
+今icons.svgをクリックすると画像プレビューになっていると思うので、
+
+1. 左のファイル一覧で icons.svgを右クリック
+2. 「Open With…（ファイルを開くアプリケーションの選択）」
+3. 「Text Editor」 を選択
+
+これで、avgのソースコード開ける
+<svg ...>
+  <symbol id="documentation-icon" ...>
+    <path ... />
+  </symbol>
+
+  <symbol id="github-icon" ...>
+    ...
+  </symbol>
+</svg>
