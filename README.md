@@ -21,21 +21,10 @@ npm run dev   # 開発サーバー起動 → http://localhost:5173
 
 | # | ステップ | 学ぶこと | ノート | 状態 |
 |---|---------|---------|--------|------|
-| 0 | 全体像とプロジェクト構成 | React の思想、JSX、コンポーネント、Vite | [00-overview.md](./documents/00-overview.md) | ✅ |
-| 1 | 画面の骨組みを作る | JSX で UI を組む、CSS の当て方 | – | ⬜ |
-| 2 | タスク一覧を表示する | 配列の map、key、props、型定義 | – | ⬜ |
-| 3 | 完了/未完了を切り替える | useState、再レンダリング、イミュータブル更新 | – | ⬜ |
-| 4 | タスクを追加する | フォーム、制御コンポーネント、イベント | – | ⬜ |
-| 5 | タスクを削除する | filter、state の持ち上げ | – | ⬜ |
-| 6 | 未完了だけ表示する絞り込み | 派生した値、state を増やしすぎない設計 | – | ⬜ |
-| 7 | リロードしても消えないようにする | useEffect、副作用、localStorage | – | ⬜ |
-| 8 | ファイルを分割して整理する | コンポーネント設計、型の置き場所 | – | ⬜ |
+| 0 | React の全体像とプロジェクト構成 | React の思想、JSX、コンポーネント、Vite、TypeScript | [00-overview.md](./documents/00-overview.md) | ✅ |
+| 1 | 画面を作る（静的 UI） | コンポーネント分割、props、配列の map と key、型定義、CSS | [01-components-props.md](./documents/01-components-props.md) | ✅ |
+| 2 | 状態を持たせて動かす | useState、イベント、イミュータブル更新、フォーム、state の持ち上げ | – | ⬜ |
+| 3 | 絞り込みと永続化 | 派生した値、useEffect、localStorage | – | ⬜ |
+| 4 | 整理する | ファイル分割、カスタムフック、コンポーネント設計 | – | ⬜ |
 
-## 進め方
-
-各 Step では、
-
-1. 実装を行う
-2. その Step で学んだ内容を `documents/NN-*.md` に書き残す
-
-という流れで進めます。
+各 Step は「実装する → 学んだ内容を `documents/NN-*.md` に書き残す」の流れで進めます。
