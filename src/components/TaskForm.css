@@ -1,0 +1,43 @@
+.form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.form__input {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form__input::placeholder {
+  color: var(--text-muted);
+}
+
+.form__input:focus {
+  border-color: var(--accent);
+}
+
+.form__button {
+  padding: 12px 20px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--accent-text);
+  background-color: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.form__button:hover {
+  opacity: 0.85;
+}

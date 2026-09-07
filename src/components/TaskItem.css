@@ -1,0 +1,48 @@
+.task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.task__checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.task__title {
+  flex: 1;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+/* 完了したタスクだけに付く見た目 */
+.task--done .task__title {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.task__delete {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.task__delete:hover {
+  color: var(--danger);
+  background-color: var(--bg);
+}
