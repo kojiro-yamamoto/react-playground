@@ -68,3 +68,44 @@ import './App.css'
     ...
   </symbol>
 </svg>
+=========================
+こんな感じでメモすると、あとで見返しても分かりやすいと思います。
+
+Reactのイベントハンドラ
+
+onから始まる onClick、onChange、onSubmit などは、「そのイベントが発生したときに実行する関数」を指定するためのもの。
+
+onClick={handleClick}   // クリックされたとき
+onChange={handleChange} // 入力内容が変わったとき
+onSubmit={handleSubmit} // フォームが送信されたとき
+
+関数をその場で書くこともできる。
+
+onChange={(event) => setTitle(event.target.value)}
+
+これは、
+
+* event：イベント発生時にReactから渡されるイベント情報（引数）
+* event.target：イベントが発生した要素（今回はinput）
+* event.target.value：そのinputに現在入力されている値
+* setTitle(...)：取得した値でtitleのstateを更新
+
+という意味。
+
+つまり、
+
+inputに文字を入力
+↓
+onChangeが発生
+↓
+Reactがeventを渡して関数を実行
+↓
+event.target.value で入力値を取得
+↓
+setTitle() でstateを更新
+
+補足： eventという名前に特別な意味はなく、eなど別の名前でもOK。
+
+onChange={(e) => setTitle(e.target.value)}
+
+これでも同じ。
