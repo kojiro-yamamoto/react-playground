@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import './TaskForm.css'
 
 type TaskFormProps = {
@@ -8,7 +8,7 @@ type TaskFormProps = {
 export function TaskForm({ onAdd }: TaskFormProps) {
   const [title, setTitle] = useState('')
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const trimmed = title.trim()
