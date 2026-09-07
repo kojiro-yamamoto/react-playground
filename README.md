@@ -27,6 +27,16 @@ npm run dev   # 開発サーバー起動 → http://localhost:5173
 | 3 | 絞り込みと永続化 | 派生した値、useEffect、localStorage | [03-effect-storage.md](./documents/03-effect-storage.md) |
 | 4 | 整理する | ファイル分割、カスタムフック、コンポーネント設計 | [04-refactoring.md](./documents/04-refactoring.md) |
 
+各 Step の完了時点は `step0`〜`step4` ブランチとしてリモートに残してあります。
+その Step の画面を動かしたいときは、ブランチを切り替えて `npm run dev` すれば見られます。
+
+```bash
+git switch step2   # Step 2 完了時点の状態
+npm run dev
+```
+
+`main` は常に最新（Step 4 まで完了した状態）です。
+
 ## アプリの機能
 
 - タスクの追加 / 完了トグル / 削除
