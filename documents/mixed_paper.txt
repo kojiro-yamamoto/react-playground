@@ -109,3 +109,81 @@ setTitle() でstateを更新
 onChange={(e) => setTitle(e.target.value)}
 
 これでも同じ。
+=========================
+useStateやuseEffectは、Reactでは正式に Hooks（フック） と呼びます。
+=========================
+useEffect(実行したい処理, 依存配列)
+
+今回なら、
+
+useEffect(() => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+}, [tasks])
+
+第1引数は、
+
+() => {
+  localStorage.setItem(...)
+}
+
+→ 実行したい処理
+
+第2引数は、
+
+[tasks]
+
+→ このEffectが依存している値（依存配列 / dependency array）
+
+です。
+
+なので、ざっくり
+
+「tasksが前回のレンダー時から変わっていたら、この処理を実行する」
+
+という理解でOKです。
+
+3パターンを整理すると
+
+// ① 第2引数なし
+useEffect(() => {
+  ...
+})
+
+→ 毎回のレンダー後に実行
+
+// ② 空配列
+useEffect(() => {
+  ...
+}, [])
+
+→ 最初のレンダー後だけ実行
+
+// ③ 値を入れる
+useEffect(() => {
+  ...
+}, [tasks])
+
+→ 最初のレンダー後 ＋ tasksが変わったレンダー後に実行
+
+ここだけ注意で、[tasks]でも初回は実行されます。
+
+さらに、
+
+useEffect(() => {
+  ...
+}, [tasks, filter])
+
+なら、
+
+tasksかfilterのどちらかが変わったら実行
+
+です。
+
+なので「条件」という捉え方でもいいんですが、Reactでは正式には**依存配列（dependency array）**と呼びます。
+
+「実行条件を書く」というより、
+
+この処理はどの値に依存しているのかを書く
+
+と覚えると、今後Reactを勉強するときにより正確です。
+=========================

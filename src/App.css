@@ -79,6 +79,37 @@
   opacity: 0.85;
 }
 
+/* ---- 絞り込みボタン ---- */
+
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.filters__button {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-muted);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+.filters__button:hover {
+  color: var(--text);
+}
+
+.filters__button--active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background-color: var(--surface);
+  font-weight: 600;
+}
+
 /* ---- タスク一覧 ---- */
 
 .task-list {

@@ -24,7 +24,7 @@ npm run dev   # 開発サーバー起動 → http://localhost:5173
 | 0 | React の全体像とプロジェクト構成 | React の思想、JSX、コンポーネント、Vite、TypeScript | [00-overview.md](./documents/00-overview.md) | ✅ |
 | 1 | 画面を作る（静的 UI） | コンポーネント分割、props、配列の map と key、型定義、CSS | [01-components-props.md](./documents/01-components-props.md) | ✅ |
 | 2 | 状態を持たせて動かす | useState、イベント、イミュータブル更新、フォーム、state の持ち上げ | [02-state.md](./documents/02-state.md) | ✅ |
-| 3 | 絞り込みと永続化 | 派生した値、useEffect、localStorage | – | ⬜ |
+| 3 | 絞り込みと永続化 | 派生した値、useEffect、localStorage | [03-effect-storage.md](./documents/03-effect-storage.md) | ✅ |
 | 4 | 整理する | ファイル分割、カスタムフック、コンポーネント設計 | – | ⬜ |
 
 各 Step は「実装する → 学んだ内容を `documents/NN-*.md` に書き残す」の流れで進めます。

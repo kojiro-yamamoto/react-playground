@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from 'react'
+import { useEffect, useState, type SubmitEvent } from 'react'
 import './App.css'
 
 // ---------------------------------------------
@@ -10,15 +10,77 @@ type Task = {
   done: boolean
 }
 
-// 最初に表示しておくタスク（Step 3 で localStorage に置き換える）
-const initialTasks: Task[] = [
+// 取りうる値を並べた型（ユニオン型）
+type Filter = 'all' | 'active' | 'done'
+
+// ---------------------------------------------
+// localStorage との入出力
+// ---------------------------------------------
+const STORAGE_KEY = 'react-playground:tasks'
+
+// 初回だけ表示するサンプル
+const sampleTasks: Task[] = [
   { id: 't1', title: '牛乳を買う', done: false },
   { id: 't2', title: 'React のドキュメントを読む', done: true },
   { id: 't3', title: '請求書を送る', done: false },
 ]
 
+function loadTasks(): Task[] {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === null) return sampleTasks // 保存が一度もなければサンプルを出す
+    return JSON.parse(saved) as Task[]
+  } catch {
+    // 保存データが壊れている / localStorage が使えない場合
+    return []
+  }
+}
+
 // ---------------------------------------------
-// TaskItem：タスク1件。押されたら親に id を報告する
+// 絞り込みの定義
+// ---------------------------------------------
+const FILTERS: { value: Filter; label: string }[] = [
+  { value: 'all', label: 'すべて' },
+  { value: 'active', label: '未完了' },
+  { value: 'done', label: '完了' },
+]
+
+const EMPTY_MESSAGES: Record<Filter, string> = {
+  all: 'タスクはまだありません',
+  active: '未完了のタスクはありません',
+  done: '完了したタスクはありません',
+}
+
+type FilterBarProps = {
+  current: Filter
+  onChange: (filter: Filter) => void
+}
+
+function FilterBar({ current, onChange }: FilterBarProps) {
+  return (
+    <div className="filters" role="group" aria-label="タスクの絞り込み">
+      {FILTERS.map((filter) => {
+        const isActive = filter.value === current
+        return (
+          <button
+            key={filter.value}
+            type="button"
+            className={
+              isActive ? 'filters__button filters__button--active' : 'filters__button'
+            }
+            aria-pressed={isActive}
+            onClick={() => onChange(filter.value)}
+          >
+            {filter.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+// ---------------------------------------------
+// TaskItem
 // ---------------------------------------------
 type TaskItemProps = {
   task: Task
@@ -49,17 +111,18 @@ function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
 }
 
 // ---------------------------------------------
-// TaskList：受け取った配列を並べるだけ。親から来た関数はそのまま子へ渡す
+// TaskList
 // ---------------------------------------------
 type TaskListProps = {
   tasks: Task[]
+  emptyMessage: string
   onToggle: (id: string) => void
   onDelete: (id: string) => void
 }
 
-function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
+function TaskList({ tasks, emptyMessage, onToggle, onDelete }: TaskListProps) {
   if (tasks.length === 0) {
-    return <p className="empty">タスクはまだありません</p>
+    return <p className="empty">{emptyMessage}</p>
   }
 
   return (
@@ -77,7 +140,7 @@ function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
 }
 
 // ---------------------------------------------
-// TaskForm：入力中の文字は自分で持つ。確定したら親に渡す
+// TaskForm
 // ---------------------------------------------
 type TaskFormProps = {
   onAdd: (title: string) => void
@@ -87,13 +150,13 @@ function TaskForm({ onAdd }: TaskFormProps) {
   const [title, setTitle] = useState('')
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault() // ページのリロードを止める
+    event.preventDefault()
 
     const trimmed = title.trim()
-    if (trimmed === '') return // 空文字は追加しない
+    if (trimmed === '') return
 
     onAdd(trimmed)
-    setTitle('') // 入力欄を空に戻す
+    setTitle('')
   }
 
   return (
@@ -113,21 +176,31 @@ function TaskForm({ onAdd }: TaskFormProps) {
 }
 
 // ---------------------------------------------
-// App：tasks の持ち主。更新処理をすべてここに集める
+// App
 // ---------------------------------------------
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks)
+  // loadTasks を「呼ばずに渡す」＝ 初回レンダリングでだけ実行される（遅延初期化）
+  const [tasks, setTasks] = useState<Task[]>(loadTasks)
+  const [filter, setFilter] = useState<Filter>('all')
 
-  // state ではなく、tasks から毎回計算する（派生した値）
+  // tasks が変わるたびに localStorage へ保存する
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+  }, [tasks])
+
+  // ---- 派生した値：state にせず、毎回計算する ----
   const remaining = tasks.filter((task) => !task.done).length
 
+  const visibleTasks = tasks.filter((task) => {
+    if (filter === 'active') return !task.done
+    if (filter === 'done') return task.done
+    return true
+  })
+
+  // ---- 更新処理 ----
   function handleAdd(title: string) {
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title,
-      done: false,
-    }
-    setTasks((prev) => [...prev, newTask]) // 元の配列を壊さず、新しい配列を作る
+    const newTask: Task = { id: crypto.randomUUID(), title, done: false }
+    setTasks((prev) => [...prev, newTask])
   }
 
   function handleToggle(id: string) {
@@ -153,7 +226,14 @@ function App() {
 
       <TaskForm onAdd={handleAdd} />
 
-      <TaskList tasks={tasks} onToggle={handleToggle} onDelete={handleDelete} />
+      <FilterBar current={filter} onChange={setFilter} />
+
+      <TaskList
+        tasks={visibleTasks}
+        emptyMessage={EMPTY_MESSAGES[filter]}
+        onToggle={handleToggle}
+        onDelete={handleDelete}
+      />
     </div>
   )
 }
